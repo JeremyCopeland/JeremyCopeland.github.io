@@ -1,0 +1,16 @@
+:root{
+    --default-color: #FFE6B6;
+    --default-border: 2px solid #FFFFFF;
+
+    --correct-color: #DDFFDD;
+    --incorrect-color: #EE6666;
+    --incorrect-border: 2px solid #AA0000;
+
+    --plausible-color: #FFCCFF;
+    --unverified-color: #FFFFFF;
+    --unverifiable-color: #FFFFFF;
+    --declaration-color: #FFE6B6;
+    --unknown-border: 2px solid #BBBBBB;
+
+    --equivalent-values-color: #6EBAE9;
+}
