@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraphcore.js"></script>
-    <script src="./js_css_files/aleaPRNG-1.1.min.js"></script>
     <script src="./js_css_files/pSBC.js"></script>
     <link rel="stylesheet" href="./js_css_files/grading.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraph.css">
@@ -19,7 +18,7 @@
 
 <div class = "content" id = "submission" style = "height: auto"><!-- probably this becomes unnecessary when we embed this into a page with its own stylesheet.-->
 <h2>Overview</h2>
-Welcome to our automated grader assisting tool.  This tool is designed to solve a very precise problem: We set out to find all of the obvious mathematical statements in each student&#x27;s submission and then check whether these statements are correct or incorrect in the context of the problem.
+Welcome to our grader feature analysis tool.  This tool is designed to solve a very precise problem: We set out to find all of the obvious mathematical statements in each student&#x27;s submission and then check whether these statements are correct or incorrect in the context of the problem.  You can activate this tool by clicking the Analyze Submission button, if the tool is available for the given submission.
 
 How does it work, you ask?  Well, we begin by giving the machine a rubric that explains to it what things are true in the problem we are grading.  In many problems, like when there is a single unique answer to the the problem, the machine tests that every statement the student makes is consistent with the answer.  For example, if the question is: Find all positive solutions to
 <span class="correct math  v5d66807c59c9078076ed44d6c8cd48ff " onmouseover='highlight("v5d66807c59c9078076ed44d6c8cd48ff", 2.00000000000000, 0); ' onmouseout='unhighlight("v5d66807c59c9078076ed44d6c8cd48ff"); ' data-tooltip="x+y
@@ -108,7 +107,7 @@ Angles: (51.2752, 90.0000, 38.7248) = (51.2752, 90.0000, 38.7248)
 Angles: (39.5590, 90.0000, 50.4410)
 Angles: (47.7747, 90.0000, 42.2253)
 Angles: (51.2752, 90.0000, 38.7248)
-">triangle ACH</span>, you will see that the machine believes this is a true statement because it is true for its three chosen sample diagrams.  Now you won&#x27;t have to check these statements.  Even if the student gets the wrong ordering, such as <span class="math incorrect " onmouseover='highlightTriangles(998, "#EE6666", "A", "C", "H", "B", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="ACH ~ BCH
+">triangle ACH</span>, you will see that the machine believes this is a true statement because it is true for its three chosen sample diagrams.  Now you can be confident about these statements.  Be aware that even if the student gets the wrong ordering, such as <span class="math incorrect " onmouseover='highlightTriangles(998, "#EE6666", "A", "C", "H", "B", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="ACH ~ BCH
 PROBABLE: △AHC ∼ △HBC
 Angles: (39.5590, 90.0000, 50.4410) = (50.4410, 90.0000, 39.5590)
 Angles: (47.7747, 90.0000, 42.2253) = (42.2253, 90.0000, 47.7747)
@@ -300,6 +299,13 @@ Now that we have these points, they are usable, as in <span class="incorrect mat
                     }
                 </script>
             </div>
+
+    
+<h2>Best Practices</h2>
+    
+So, should the analysis server eventually replace the human work we do to verify student claims? Absolutely not, though it should greatly help with that process. This bot has many strengths, and it should save a lot of time with certain student submissions. But the tool has many limitations: combinatorics is hard for it to parse, students may write in insufficiently clear language, and proof by contradiction is a whole can of worms. Ensuring that a student's solution even includes the necessary steps will remain entirely a human domain (for now). The tool will be great at considering geometric statements, assigning new variables, and when it thinks it knows enough to make an assessment about a statement, it is very accurate. 
+
+Play around with the bot, and get a sense of how you can best employ it without over-relying on it. First, read the student submission. If the student wrote enough expressions that the AI can parse, you can skim, trusting that you’ll verify them with the bot’s help. For any statement marked as true, it’s sufficient to give a sanity check on the math and make sure it looks like it's written in a way the bot can handle. If you're not sure, always tend on the side of double checking. We hope this makes grading easier, faster, and/or more human. If you get the chance to play with it, let us know any successes or bugs on the School Staff Forum. Happy problem solving!
 
 
 </div>
