@@ -11,305 +11,357 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraph.css">
 
     <script src="../js_css_files/grading.js"></script>
+    <style>
+        /* Style the tab */
+        .tab {
+          overflow: hidden;
+          border: 1px solid #ccc;
+          background-color: #f1f1f1;
+        }
+
+        /* Style the buttons inside the tab */
+        .tab button {
+          background-color: inherit;
+          float: left;
+          border: none;
+          outline: none;
+          cursor: pointer;
+          padding: 14px 16px;
+          transition: 0.3s;
+          font-size: 17px;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+          background-color: #ddd;
+        }
+
+        /* Create an active/current tablink class */
+        .tab button.active {
+          background-color: #ccc;
+        }        
+    </style>
 
 </head>
 
 <body class="aops-font">
 
-
-<div class = "content" id = "submission" style = "height: auto"><!-- probably this becomes unnecessary when we embed this into a page with its own stylesheet.-->
-<h2>Overview</h2>
-Welcome to our grader feature analysis tool.  This tool is designed to solve a very precise problem: We set out to find all of the obvious mathematical statements in each student&#x27;s submission and then check whether these statements are correct or incorrect in the context of the problem.  You can activate this tool by clicking the Analyze Submission button, if the tool is available for the given submission.
-
-How does it work, you ask?  Well, we begin by giving the machine a rubric that explains to it what things are true in the problem we are grading.  In many problems, like when there is a single unique answer to the the problem, the machine tests that every statement the student makes is consistent with the answer.  For example, if the question is: Find all positive solutions to
-<span class="correct math  v5d66807c59c9078076ed44d6c8cd48ff " onmouseover='highlight("v5d66807c59c9078076ed44d6c8cd48ff", 2.00000000000000, 0); ' onmouseout='unhighlight("v5d66807c59c9078076ed44d6c8cd48ff"); ' data-tooltip="x+y
-2.0000">x+y</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="x+y = 2
-2.0000 = 2.0000">=</span><span class="correct math  v5d66807c59c9078076ed44d6c8cd48ff " onmouseover='highlight("v5d66807c59c9078076ed44d6c8cd48ff", 2.00000000000000, 0); ' onmouseout='unhighlight("v5d66807c59c9078076ed44d6c8cd48ff"); ' data-tooltip="2
-2.0000">2</span>
-<span class="correct math  vd4ece63dc90ca28fd1d2b0516ffb2fed " onmouseover='highlight("vd4ece63dc90ca28fd1d2b0516ffb2fed", 2.36364252615315E-125, 0); ' onmouseout='unhighlight("vd4ece63dc90ca28fd1d2b0516ffb2fed"); ' data-tooltip="x-y
-0.0000">x-y</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="x-y = 0
-0.0000 = 0.0000">=</span><span class="correct math  vd4ece63dc90ca28fd1d2b0516ffb2fed " onmouseover='highlight("vd4ece63dc90ca28fd1d2b0516ffb2fed", 0, 0); ' onmouseout='unhighlight("vd4ece63dc90ca28fd1d2b0516ffb2fed"); ' data-tooltip="0
-0.0000">0</span>,
-then there is only one solution, namely <span class="correct math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="x
-1.0000">x</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="x = y
-1.0000 = 1.0000">=</span><span class="correct correct math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="y
-1.0000">y</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="y = 1
-1.0000 = 1.0000">=</span><span class="correct math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="1
-1.0000">1</span>.  When a student says something correct, like <span class="correct math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="x
-1.0000">x</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="x = 1
-1.0000 = 1.0000">=</span><span class="correct math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="1
-1.0000">1</span>, we mark it as such.  The correct statement needn&#x27;t be &lt;emph&gt;interesting&lt;/emph&gt; to be correct.  Take <span class="correct math  ve26ac6d6a9fbfbcb42e3c1914792ad8d " onmouseover='highlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d", 3.00000000000000, 0); ' onmouseout='unhighlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d"); ' data-tooltip="x^2+2xy
-3.0000">x^2+2xy</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="x^2+2xy = 3
-3.0000 = 3.0000">=</span><span class="correct math  ve26ac6d6a9fbfbcb42e3c1914792ad8d " onmouseover='highlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d", 3.00000000000000, 0); ' onmouseout='unhighlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d"); ' data-tooltip="3
-3.0000">3</span> as an example, or <span class="correct math  v4b098c3b84a08da471e123471228c9e8 " onmouseover='highlight("v4b098c3b84a08da471e123471228c9e8", 9.00000000000000, 0); ' onmouseout='unhighlight("v4b098c3b84a08da471e123471228c9e8"); ' data-tooltip="3+6
-9.0000">3+6</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="3+6 = 9
-9.0000 = 9.0000">=</span><span class="correct math  v4b098c3b84a08da471e123471228c9e8 " onmouseover='highlight("v4b098c3b84a08da471e123471228c9e8", 9.00000000000000, 0); ' onmouseout='unhighlight("v4b098c3b84a08da471e123471228c9e8"); ' data-tooltip="9
-9.0000">9</span>, which are both true, but it is still up to the grader to know whether either statement is relevant.  If the student says something false, such as <span class="incorrect math  v5d66807c59c9078076ed44d6c8cd48ff " onmouseover='highlight("v5d66807c59c9078076ed44d6c8cd48ff", 2.00000000000000, 0); ' onmouseout='unhighlight("v5d66807c59c9078076ed44d6c8cd48ff"); ' data-tooltip="x+y
-2.0000">x+y</span><span class="incorrect math " onmouseover='' onmouseout='' data-tooltip="x+y = 3
-2.0000 = 3.0000">=</span><span class="incorrect math  ve26ac6d6a9fbfbcb42e3c1914792ad8d " onmouseover='highlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d", 3.00000000000000, 0); ' onmouseout='unhighlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d"); ' data-tooltip="3
-3.0000">3</span>, then we mark that as well.   Furthermore, the machine understands that an expression cannot be evaluated, but you may still want to know something about it.  So if you hover your mouse over <span class="math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="x/y
-1.0000">x/y</span> or <span class="math  ve26ac6d6a9fbfbcb42e3c1914792ad8d " onmouseover='highlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d", 3.00000000000000, 0); ' onmouseout='unhighlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d"); ' data-tooltip="3x
-3.0000">3x</span>, you will learn its value and you will also be shown other expressions that have the same value.
-
-The machine is also capable of dealing with chains of statements as in
-<span class="correct math  v28b765257d633b663e657b4c4579c291 " onmouseover='highlight("v28b765257d633b663e657b4c4579c291", 4.00000000000000, 0); ' onmouseout='unhighlight("v28b765257d633b663e657b4c4579c291"); ' data-tooltip="2+2
-4.0000">2+2</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="2+2 = 2*2
-4.0000 = 4.0000">=</span><span class="correct correct math  v28b765257d633b663e657b4c4579c291 " onmouseover='highlight("v28b765257d633b663e657b4c4579c291", 4.00000000000000, 0); ' onmouseout='unhighlight("v28b765257d633b663e657b4c4579c291"); ' data-tooltip="2*2
-4.0000">2*2</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="2*2 = 2^2
-4.0000 = 4.0000">=</span><span class="correct_incorrect correct_incorrect math  v28b765257d633b663e657b4c4579c291 " onmouseover='highlight("v28b765257d633b663e657b4c4579c291", 4.00000000000000, 0); ' onmouseout='unhighlight("v28b765257d633b663e657b4c4579c291"); ' data-tooltip="2^2
-4.0000">2^2</span><span class="incorrect math " onmouseover='' onmouseout='' data-tooltip="2^2 = 2/2
-4.0000 = 1.0000">=</span><span class="incorrect math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="2/2
-1.0000">2/2</span>.
-It can parse a limited number of non-equation-looking text as well.  For example, <span class="correct math  v5d66807c59c9078076ed44d6c8cd48ff " onmouseover='highlight("v5d66807c59c9078076ed44d6c8cd48ff", 2.00000000000000, 0); ' onmouseout='unhighlight("v5d66807c59c9078076ed44d6c8cd48ff"); ' data-tooltip="2x
-2.0000">2x</span><span class="math correct " onmouseover='' onmouseout='' data-tooltip="2x = 7 - 5y
-2.0000 = 7.0000 - 5.0000"> is equal to </span><span class="correct math  v9773df384e5103933ce84fd861fadb35 " onmouseover='highlight("v9773df384e5103933ce84fd861fadb35", 7.00000000000000, 0); ' onmouseout='unhighlight("v9773df384e5103933ce84fd861fadb35"); ' data-tooltip="7
-7.0000">7</span><span class="math correct " onmouseover='' onmouseout='' data-tooltip="2x = 7 - 5y
-2.0000 = 7.0000 - 5.0000"> minus </span><span class="correct math  v624adab4299ba1754d32194725a6fd9b " onmouseover='highlight("v624adab4299ba1754d32194725a6fd9b", 5.00000000000000, 0); ' onmouseout='unhighlight("v624adab4299ba1754d32194725a6fd9b"); ' data-tooltip="5y
-5.0000">5y</span>.
-
-Finally, we also have the ability to check the negations of statements.  For example, <span class="plausible math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="x
-1.0000">x</span><span class="math plausible " onmouseover='' onmouseout='' data-tooltip="x ≠ 2x
-1.0000 ≠ 2.0000"> is not equal to </span><span class="plausible math  v5d66807c59c9078076ed44d6c8cd48ff " onmouseover='highlight("v5d66807c59c9078076ed44d6c8cd48ff", 2.00000000000000, 0); ' onmouseout='unhighlight("v5d66807c59c9078076ed44d6c8cd48ff"); ' data-tooltip="2x
-2.0000">2x</span>.  We mark this in pink because it is a true statement, but not a very powerful one.  It turns out that it is much easier to make a false statement than to make a true statement.  For example, there&#x27;s only one value that <span class="math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="x
-1.0000">x</span> can be, namely <span class="correct math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="x
-1.0000">x</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="x = 1
-1.0000 = 1.0000">=</span><span class="correct math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="1
-1.0000">1</span>.  However, there are infinitely many inequality statements that can be made, <span class="plausible math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="x
-1.0000">x</span><span class="plausible math " onmouseover='' onmouseout='' data-tooltip="x ≠ 2
-1.0000 ≠ 2.0000">≠</span><span class="plausible math  v5d66807c59c9078076ed44d6c8cd48ff " onmouseover='highlight("v5d66807c59c9078076ed44d6c8cd48ff", 2.00000000000000, 0); ' onmouseout='unhighlight("v5d66807c59c9078076ed44d6c8cd48ff"); ' data-tooltip="2
-2.0000">2</span>, <span class="plausible math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="x
-1.0000">x</span><span class="plausible math " onmouseover='' onmouseout='' data-tooltip="x ≠ 3
-1.0000 ≠ 3.0000">≠</span><span class="plausible math  ve26ac6d6a9fbfbcb42e3c1914792ad8d " onmouseover='highlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d", 3.00000000000000, 0); ' onmouseout='unhighlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d"); ' data-tooltip="3
-3.0000">3</span>, <span class="plausible math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="x
-1.0000">x</span><span class="plausible math " onmouseover='' onmouseout='' data-tooltip="x ≠ 4
-1.0000 ≠ 4.0000">≠</span><span class="plausible math  v28b765257d633b663e657b4c4579c291 " onmouseover='highlight("v28b765257d633b663e657b4c4579c291", 4.00000000000000, 0); ' onmouseout='unhighlight("v28b765257d633b663e657b4c4579c291"); ' data-tooltip="4
-4.0000">4</span>, etc.
-
-
-<h2>Configurations</h2>
-
-However, when working with many problems, and with geometry in particular, there are usually infinitely many ways in which a statement can be true.  For example, in the diagram, we have given the server a rubric that tells it that <span class="correct math " onmouseover='highlightTriangles(998, "#66FF66", "A", "B", "C")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="Angles ABC
-Angles: (39.5590, 90.0000, 50.4410)
-Angles: (47.7747, 90.0000, 42.2253)
-Angles: (51.2752, 90.0000, 38.7248)
-">ABC</span><span class="math correct " onmouseover='' onmouseout='' data-tooltip="ABC is a right triangle
-Angles: (39.5590, 90.0000, 50.4410)
-Angles: (47.7747, 90.0000, 42.2253)
-Angles: (51.2752, 90.0000, 38.7248)
-"> is an arbitrary right triangle</span>.  Instead of working with formal mathematical statements, the machine works by sampling the full configuration space.  If you hover over the phrase <span class="correct math " onmouseover='highlightTriangles(998, "#66FF66", "A", "B", "C")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="Angles triangle ABC
-Angles: (39.5590, 90.0000, 50.4410)
-Angles: (47.7747, 90.0000, 42.2253)
-Angles: (51.2752, 90.0000, 38.7248)
-">triangle ABC</span><span class="math correct " onmouseover='highlightTriangles(998, "#66FF66", "A", "B", "C", "A", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="triangle ABC ~ triangle ACH
-Angles: (39.5590, 90.0000, 50.4410) = (39.5590, 90.0000, 50.4410)
-Angles: (47.7747, 90.0000, 42.2253) = (47.7747, 90.0000, 42.2253)
-Angles: (51.2752, 90.0000, 38.7248) = (51.2752, 90.0000, 38.7248)
-"> is similar to </span><span class="correct math " onmouseover='highlightTriangles(998, "#66FF66", "A", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="Angles triangle ACH
-Angles: (39.5590, 90.0000, 50.4410)
-Angles: (47.7747, 90.0000, 42.2253)
-Angles: (51.2752, 90.0000, 38.7248)
-">triangle ACH</span>, you will see that the machine believes this is a true statement because it is true for its three chosen sample diagrams.  Now you can be confident about these statements.  Be aware that even if the student gets the wrong ordering, such as <span class="math incorrect " onmouseover='highlightTriangles(998, "#EE6666", "A", "C", "H", "B", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="ACH ~ BCH
-PROBABLE: △AHC ∼ △HBC
-Angles: (39.5590, 90.0000, 50.4410) = (50.4410, 90.0000, 39.5590)
-Angles: (47.7747, 90.0000, 42.2253) = (42.2253, 90.0000, 47.7747)
-Angles: (51.2752, 90.0000, 38.7248) = (38.7248, 90.0000, 51.2752)
-">triangles </span><span class="incorrect math " onmouseover='highlightTriangles(998, "#EE6666", "A", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="Angles ACH
-Angles: (39.5590, 90.0000, 50.4410)
-Angles: (47.7747, 90.0000, 42.2253)
-Angles: (51.2752, 90.0000, 38.7248)
-">ACH</span><span class="math incorrect " onmouseover='highlightTriangles(998, "#EE6666", "A", "C", "H", "B", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="ACH ~ BCH
-PROBABLE: △AHC ∼ △HBC
-Angles: (39.5590, 90.0000, 50.4410) = (50.4410, 90.0000, 39.5590)
-Angles: (47.7747, 90.0000, 42.2253) = (42.2253, 90.0000, 47.7747)
-Angles: (51.2752, 90.0000, 38.7248) = (38.7248, 90.0000, 51.2752)
-"> and </span><span class="incorrect math " onmouseover='highlightTriangles(998, "#EE6666", "B", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="Angles BCH
-Angles: (50.4410, 90.0000, 39.5590)
-Angles: (42.2253, 90.0000, 47.7747)
-Angles: (38.7248, 90.0000, 51.2752)
-">BCH</span><span class="math incorrect " onmouseover='highlightTriangles(998, "#EE6666", "A", "C", "H", "B", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="ACH ~ BCH
-PROBABLE: △AHC ∼ △HBC
-Angles: (39.5590, 90.0000, 50.4410) = (50.4410, 90.0000, 39.5590)
-Angles: (47.7747, 90.0000, 42.2253) = (42.2253, 90.0000, 47.7747)
-Angles: (51.2752, 90.0000, 38.7248) = (38.7248, 90.0000, 51.2752)
-"> are similar</span>, the machine will recognize the error and also point out the incorrect ordering of the vertices.
-
-We are also able to handle negations, as in <span class="math plausible " onmouseover='highlightAngles(998, "#FFCCFF", "A", "B", "C","B", "A", "C")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="ABC ≠ BAC
-39.5590 ≠ 50.4410
-47.7747 ≠ 42.2253
-51.2752 ≠ 38.7248
-">angles </span><span class="plausible math  v8e91634f0bd179b74568af21f3b2b5e2 v6b0fdf7920000c311e759059a0cd6a33 vc6c903907d347271048c9ef02294999d " onmouseover='highlight("v6b0fdf7920000c311e759059a0cd6a33", 39.5589916369607, 0); highlightAngles(998, "#FFCCFF", "A", "B", "C")' onmouseout='unhighlight("v6b0fdf7920000c311e759059a0cd6a33"); unhighlightGeoEntities(998)' data-tooltip="Angle ABC
-39.5590
-47.7747
-51.2752
-">ABC</span><span class="math plausible " onmouseover='highlightAngles(998, "#FFCCFF", "A", "B", "C","B", "A", "C")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="ABC ≠ BAC
-39.5590 ≠ 50.4410
-47.7747 ≠ 42.2253
-51.2752 ≠ 38.7248
-"> and </span><span class="plausible math  v73d11d6ae7f5a6191c67bfdf27d3baac v757d00aba38cfa3bed1e53688d18e830 v2cde0510a002b32e50e9b1c0d99d6b5d " onmouseover='highlight("v73d11d6ae7f5a6191c67bfdf27d3baac", 50.4410083630393, 0); highlightAngles(998, "#FFCCFF", "B", "A", "C")' onmouseout='unhighlight("v73d11d6ae7f5a6191c67bfdf27d3baac"); unhighlightGeoEntities(998)' data-tooltip="Angle BAC
-50.4410
-42.2253
-38.7248
-">BAC</span><span class="math plausible " onmouseover='highlightAngles(998, "#FFCCFF", "A", "B", "C","B", "A", "C")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="ABC ≠ BAC
-39.5590 ≠ 50.4410
-47.7747 ≠ 42.2253
-51.2752 ≠ 38.7248
-"> are not congruent</span>, or <span class="math plausible " onmouseover='' onmouseout='' data-tooltip="ACH ≇ BCH
-Edges: (28.8369, 22.2324, 18.3654) = (34.9086, 22.2324, 26.9135)
-Edges: (35.9532, 24.1623, 26.6236) = (32.6293, 24.1623, 21.9285)
-Edges: (49.6473, 31.0584, 38.7328) = (39.8103, 31.0584, 24.9046)
-">triangles </span><span class="plausible math " onmouseover='highlightTriangles(998, "#FFCCFF", "A", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="Lengths ACH
-Edges: (28.8369, 22.2324, 18.3654)
-Edges: (35.9532, 24.1623, 26.6236)
-Edges: (49.6473, 31.0584, 38.7328)
-">ACH</span><span class="math plausible " onmouseover='' onmouseout='' data-tooltip="ACH ≇ BCH
-Edges: (28.8369, 22.2324, 18.3654) = (34.9086, 22.2324, 26.9135)
-Edges: (35.9532, 24.1623, 26.6236) = (32.6293, 24.1623, 21.9285)
-Edges: (49.6473, 31.0584, 38.7328) = (39.8103, 31.0584, 24.9046)
-"> and </span><span class="plausible math " onmouseover='highlightTriangles(998, "#FFCCFF", "B", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="Lengths BCH
-Edges: (34.9086, 22.2324, 26.9135)
-Edges: (32.6293, 24.1623, 21.9285)
-Edges: (39.8103, 31.0584, 24.9046)
-">BCH</span><span class="math plausible " onmouseover='' onmouseout='' data-tooltip="ACH ≇ BCH
-Edges: (28.8369, 22.2324, 18.3654) = (34.9086, 22.2324, 26.9135)
-Edges: (35.9532, 24.1623, 26.6236) = (32.6293, 24.1623, 21.9285)
-Edges: (49.6473, 31.0584, 38.7328) = (39.8103, 31.0584, 24.9046)
-"> are not congruent</span>.
-
-
-
-            <div id="jxgbox_998" class="jxgbox" style="width:500px; height:500px">
-                <script>
-                    var diagram_998 = new function() {
-                        this.board = JXG.JSXGraph.initBoard("jxgbox_998", {
-                            boundingbox: [16.2934820552055, 97.6834128361953, 64.3238319535560, 36.9787106774851],
-                            keepaspectratio: true,
-                            showCopyright: false
-                        });
-
-                        this.A = this.board.create('point', [26.2934820552055, 87.6834128361953], {name:"A", size:3, fixed:true})
-                        this.B = this.board.create('point', [46.1254540684676, 46.9787106774851], {name:"B", size:3, fixed:true})
-                        this.C = this.board.create('point', [54.3238319535560, 80.9110026160413], {name:"C", size:3, fixed:true})
-                        this.H = this.board.create('point', [34.3374565417205, 71.1733257189441], {name:"H", size:3, fixed:true})
-
-                        this.AB = this.board.create('segment', [this.A, this.B], {strokeWidth:2})
-                        this.BC = this.board.create('segment', [this.B, this.C], {strokeWidth:2})
-                        this.CA = this.board.create('segment', [this.C, this.A], {strokeWidth:2})
-                        this.CH = this.board.create('segment', [this.C, this.H], {strokeWidth:2})
-
-
-                        this.listsDict = {
-                            "segments": [],
-                            "angles": [],
-                            "triangles": []
-                        }
-
-                        this.temporaryObjects = []
-                    }
-                </script>
-            </div>
-
-
-
-<h2>Declarations</h2>
-
-We are also able to handle new variable declarations to some extent.  Here we define some new points. <span class="math declaration " onmouseover='' onmouseout='' data-tooltip="Declaration: G is the midpoint of AC
-">We let </span><span class="math declaration math " onmouseover='' onmouseout='' data-tooltip="inf">G</span><span class="math declaration " onmouseover='' onmouseout='' data-tooltip="Declaration: G is the midpoint of AC
-"> be the midpoint of </span><span class="math  vb8cd9ee6f8289755e83da32fc4a600f0 vf7952dcda835bd2418c5328a082bfe78 va965ecba2cc3d2cc7447684501f4f5f5 declaration math  vb8cd9ee6f8289755e83da32fc4a600f0 vf7952dcda835bd2418c5328a082bfe78 va965ecba2cc3d2cc7447684501f4f5f5 " onmouseover='highlight("vb8cd9ee6f8289755e83da32fc4a600f0", 28.7690393284142, 0); highlightSegments(500, "#FFE6B6", "A", "C")highlight("vb8cd9ee6f8289755e83da32fc4a600f0", 28.7690393284142, 0); highlightSegments(500, "#FFE6B6", "A", "C")' onmouseout='unhighlight("vb8cd9ee6f8289755e83da32fc4a600f0"); unhighlightGeoEntities(500)unhighlight("vb8cd9ee6f8289755e83da32fc4a600f0"); unhighlightGeoEntities(500)' data-tooltip="Segment AC
-28.7690
-33.5751
-95.4222
-">AC</span>. and we also <span class="math declaration " onmouseover='' onmouseout='' data-tooltip="Declaration: X is the midpoint of PG
-">let the midpoint of </span><span class="math  v3d4374d1a906da850df87f003ecbc8ae v1a79b684e2c1742965abfd122ecbf761 v6b91142a2180b9ff978daf43fa114ced declaration math  v3d4374d1a906da850df87f003ecbc8ae v1a79b684e2c1742965abfd122ecbf761 v6b91142a2180b9ff978daf43fa114ced " onmouseover='highlight("v1a79b684e2c1742965abfd122ecbf761", 7.79153261675239, 0); highlightSegments(500, "#FFE6B6", "P", "G")highlight("v1a79b684e2c1742965abfd122ecbf761", 7.79153261675239, 0); highlightSegments(500, "#FFE6B6", "P", "G")' onmouseout='unhighlight("v1a79b684e2c1742965abfd122ecbf761"); unhighlightGeoEntities(500)unhighlight("v1a79b684e2c1742965abfd122ecbf761"); unhighlightGeoEntities(500)' data-tooltip="Segment PG
-7.7915
-8.7822
-27.0273
-">PG</span><span class="math declaration " onmouseover='' onmouseout='' data-tooltip="Declaration: X is the midpoint of PG
-"> be </span><span class="math declaration math " onmouseover='' onmouseout='' data-tooltip="inf">X</span>.  Finally, <span class="math declaration " onmouseover='' onmouseout='' data-tooltip="Declaration: O is the intersection of lines AE and XB
-">let </span><span class="math  v43af996a5265e950549e1300842faa3e v1a9ec79fffec4a072521f56b38818c65 v73dda8c8e2827794892f9a53e6cd3c06 declaration math  v43af996a5265e950549e1300842faa3e v1a9ec79fffec4a072521f56b38818c65 v73dda8c8e2827794892f9a53e6cd3c06 " onmouseover='highlight("v1a9ec79fffec4a072521f56b38818c65", 22.2122377665674, 0); highlightSegments(500, "#FFE6B6", "A", "E")highlight("v1a9ec79fffec4a072521f56b38818c65", 22.2122377665674, 0); highlightSegments(500, "#FFE6B6", "A", "E")' onmouseout='unhighlight("v1a9ec79fffec4a072521f56b38818c65"); unhighlightGeoEntities(500)unhighlight("v1a9ec79fffec4a072521f56b38818c65"); unhighlightGeoEntities(500)' data-tooltip="Segment AE
-22.2122
-88.7596
-63.7543
-">AE</span><span class="math declaration " onmouseover='' onmouseout='' data-tooltip="Declaration: O is the intersection of lines AE and XB
-"> and </span><span class="math  ve2287433868271fed77c3b3ddb0bd185 v3b1f9bb5ea04894faf93b998510b98c4 v45ef1ff3be4f539001aee26f40d071ad declaration math  ve2287433868271fed77c3b3ddb0bd185 v3b1f9bb5ea04894faf93b998510b98c4 v45ef1ff3be4f539001aee26f40d071ad " onmouseover='highlight("v3b1f9bb5ea04894faf93b998510b98c4", 16.4081531251210, 0); highlightSegments(500, "#FFE6B6", "X", "B")highlight("v3b1f9bb5ea04894faf93b998510b98c4", 16.4081531251210, 0); highlightSegments(500, "#FFE6B6", "X", "B")' onmouseout='unhighlight("v3b1f9bb5ea04894faf93b998510b98c4"); unhighlightGeoEntities(500)unhighlight("v3b1f9bb5ea04894faf93b998510b98c4"); unhighlightGeoEntities(500)' data-tooltip="Segment XB
-16.4082
-24.9420
-30.7317
-">XB</span><span class="math declaration " onmouseover='' onmouseout='' data-tooltip="Declaration: O is the intersection of lines AE and XB
-"> intersect at </span><span class="math declaration math " onmouseover='' onmouseout='' data-tooltip="inf">O</span>.
-
-Now that we have these points, they are usable, as in <span class="incorrect math  v1f293bafc22a78f51fc5b9ba1fc3c7c4 v99dc9d688cbf535a1d8373c0da879934 v58498fa45e105916ad179053eeeac944 " onmouseover='highlight("v58498fa45e105916ad179053eeeac944", 46.2419153439317, 0); highlightAngles(500, "#FFE6B6", "O", "A", "X")' onmouseout='unhighlight("v58498fa45e105916ad179053eeeac944"); unhighlightGeoEntities(500)' data-tooltip="Angle angle OAX 
-46.2419
-22.4204
-23.1761
-">angle OAX </span><span class="incorrect math " onmouseover='highlightAngles(500, "#EE6666", "O", "A", "X","O", "D", "X")' onmouseout='unhighlightGeoEntities(500)' data-tooltip="angle OAX  =  angle ODX
-46.2419 = 45.1415
-22.4204 = 10.2589
-23.1761 = 35.9708
-">=</span><span class="incorrect math  v6bc2932046c8890324c75523fc909b11 v1819c12375891a7bb234706e21adc706 v31303e22537e5935561ffb388ca93e9e " onmouseover='highlight("v1819c12375891a7bb234706e21adc706", 45.1415116570650, 0); highlightAngles(500, "#FFE6B6", "O", "D", "X")' onmouseout='unhighlight("v1819c12375891a7bb234706e21adc706"); unhighlightGeoEntities(500)' data-tooltip="Angle  angle ODX
-45.1415
-10.2589
-35.9708
-"> angle ODX</span> or <span class="plausible math  v1f293bafc22a78f51fc5b9ba1fc3c7c4 v99dc9d688cbf535a1d8373c0da879934 v58498fa45e105916ad179053eeeac944 " onmouseover='highlight("v58498fa45e105916ad179053eeeac944", 46.2419153439317, 0); highlightAngles(500, "#FFE6B6", "O", "A", "X")' onmouseout='unhighlight("v58498fa45e105916ad179053eeeac944"); unhighlightGeoEntities(500)' data-tooltip="Angle angle OAX
-46.2419
-22.4204
-23.1761
-">angle OAX</span><span class="math plausible " onmouseover='highlightAngles(500, "#FFCCFF", "O", "A", "X","O", "D", "X")' onmouseout='unhighlightGeoEntities(500)' data-tooltip="angle OAX ≠ angle ODX
-46.2419 ≠ 45.1415
-22.4204 ≠ 10.2589
-23.1761 ≠ 35.9708
-"> is not congruent to </span><span class="plausible math  v6bc2932046c8890324c75523fc909b11 v1819c12375891a7bb234706e21adc706 v31303e22537e5935561ffb388ca93e9e " onmouseover='highlight("v1819c12375891a7bb234706e21adc706", 45.1415116570650, 0); highlightAngles(500, "#FFE6B6", "O", "D", "X")' onmouseout='unhighlight("v1819c12375891a7bb234706e21adc706"); unhighlightGeoEntities(500)' data-tooltip="Angle angle ODX
-45.1415
-10.2589
-35.9708
-">angle ODX</span>.
-
-            <div id="jxgbox_500" class="jxgbox" style="width:500px; height:500px">
-                <script>
-                    var diagram_500 = new function() {
-                        this.board = JXG.JSXGraph.initBoard("jxgbox_500", {
-                            boundingbox: [57.8801627293256, 87.9344764280626, 109.868003733205, 46.2474815673671],
-                            keepaspectratio: true,
-                            showCopyright: false
-                        });
-
-                        this.A = this.board.create('point', [72.1689837179399, 77.9344764280626], {name:"A", size:3, fixed:true})
-                        this.B = this.board.create('point', [67.8801627293256, 66.3214473533137], {name:"B", size:3, fixed:true})
-                        this.E = this.board.create('point', [76.9708334147433, 56.2474815673671], {name:"E", size:3, fixed:true})
-                        this.C = this.board.create('point', [99.8680037332050, 70.1613230091608], {name:"C", size:3, fixed:true})
-                        this.D = this.board.create('point', [86.5089201190361, 62.0434565378851], {name:"D", size:3, fixed:true})
-                        this.P = this.board.create('point', [81.2050756655459, 67.9209929054370], {name:"P", size:3, fixed:true})
-                        this.G = this.board.create('point', [86.0184937255725, 74.0478997186117], {name:"G", size:3, fixed:true})
-                        this.X = this.board.create('point', [83.6117846955592, 70.9844463120243], {name:"X", size:3, fixed:true})
-                        this.O = this.board.create('point', [74.3177948267591, 68.2296213376191], {name:"O", size:3, fixed:true})
-
-                        this.BE = this.board.create('segment', [this.B, this.E], {strokeWidth:2})
-                        this.EC = this.board.create('segment', [this.E, this.C], {strokeWidth:2})
-                        this.CB = this.board.create('segment', [this.C, this.B], {strokeWidth:2})
-                        this.AC = this.board.create('segment', [this.A, this.C], {strokeWidth:2})
-                        this.AD = this.board.create('segment', [this.A, this.D], {strokeWidth:2})
-                        this.AP = this.board.create('segment', [this.A, this.P], {strokeWidth:2})
-
-
-                        this.listsDict = {
-                            "segments": [],
-                            "angles": [],
-                            "triangles": []
-                        }
-
-                        this.temporaryObjects = []
-                    }
-                </script>
-            </div>
-
-    
-<h2>Best Practices</h2>
-    
-So, should the analysis server eventually replace the human work we do to verify student claims? Absolutely not, though it should greatly help with that process. This bot has many strengths, and it should save a lot of time with certain student submissions. But the tool has many limitations: combinatorics is hard for it to parse, students may write in insufficiently clear language, and proof by contradiction is a whole can of worms. Ensuring that a student's solution even includes the necessary steps will remain entirely a human domain (for now). The tool will be great at considering geometric statements, assigning new variables, and when it thinks it knows enough to make an assessment about a statement, it is very accurate. 
-
-Play around with the bot, and get a sense of how you can best employ it without over-relying on it. First, read the student submission. If the student wrote enough expressions that the AI can parse, you can skim, trusting that you’ll verify them with the bot’s help. For any statement marked as true, it’s sufficient to give a sanity check on the math and make sure it looks like it's written in a way the bot can handle. If you're not sure, always tend on the side of double checking. We hope this makes grading easier, faster, and/or more human. If you get the chance to play with it, let us know any successes or bugs on the School Staff Forum. Happy problem solving!
-
-
+<div class="tab">
+  <button class="tablinks" onclick="openTab(event, 'featan')">featan</button>
+  <button class="tablinks" onclick="openTab(event, 'la-test')">la-test</button>
 </div>
 
+ <div id="featan" class="tabcontent">
+    <div class = "content" id = "submission" style = "height: auto"><!-- probably this becomes unnecessary when we embed this into a page with its own stylesheet.-->
+    <h2>Overview</h2>
+    Welcome to our grader feature analysis tool.  This tool is designed to solve a very precise problem: We set out to find all of the obvious mathematical statements in each student&#x27;s submission and then check whether these statements are correct or incorrect in the context of the problem.  You can activate this tool by clicking the Analyze Submission button, if the tool is available for the given submission.
+
+    How does it work, you ask?  Well, we begin by giving the machine a rubric that explains to it what things are true in the problem we are grading.  In many problems, like when there is a single unique answer to the the problem, the machine tests that every statement the student makes is consistent with the answer.  For example, if the question is: Find all positive solutions to
+    <span class="correct math  v5d66807c59c9078076ed44d6c8cd48ff " onmouseover='highlight("v5d66807c59c9078076ed44d6c8cd48ff", 2.00000000000000, 0); ' onmouseout='unhighlight("v5d66807c59c9078076ed44d6c8cd48ff"); ' data-tooltip="x+y
+    2.0000">x+y</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="x+y = 2
+    2.0000 = 2.0000">=</span><span class="correct math  v5d66807c59c9078076ed44d6c8cd48ff " onmouseover='highlight("v5d66807c59c9078076ed44d6c8cd48ff", 2.00000000000000, 0); ' onmouseout='unhighlight("v5d66807c59c9078076ed44d6c8cd48ff"); ' data-tooltip="2
+    2.0000">2</span>
+    <span class="correct math  vd4ece63dc90ca28fd1d2b0516ffb2fed " onmouseover='highlight("vd4ece63dc90ca28fd1d2b0516ffb2fed", 2.36364252615315E-125, 0); ' onmouseout='unhighlight("vd4ece63dc90ca28fd1d2b0516ffb2fed"); ' data-tooltip="x-y
+    0.0000">x-y</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="x-y = 0
+    0.0000 = 0.0000">=</span><span class="correct math  vd4ece63dc90ca28fd1d2b0516ffb2fed " onmouseover='highlight("vd4ece63dc90ca28fd1d2b0516ffb2fed", 0, 0); ' onmouseout='unhighlight("vd4ece63dc90ca28fd1d2b0516ffb2fed"); ' data-tooltip="0
+    0.0000">0</span>,
+    then there is only one solution, namely <span class="correct math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="x
+    1.0000">x</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="x = y
+    1.0000 = 1.0000">=</span><span class="correct correct math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="y
+    1.0000">y</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="y = 1
+    1.0000 = 1.0000">=</span><span class="correct math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="1
+    1.0000">1</span>.  When a student says something correct, like <span class="correct math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="x
+    1.0000">x</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="x = 1
+    1.0000 = 1.0000">=</span><span class="correct math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="1
+    1.0000">1</span>, we mark it as such.  The correct statement needn&#x27;t be &lt;emph&gt;interesting&lt;/emph&gt; to be correct.  Take <span class="correct math  ve26ac6d6a9fbfbcb42e3c1914792ad8d " onmouseover='highlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d", 3.00000000000000, 0); ' onmouseout='unhighlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d"); ' data-tooltip="x^2+2xy
+    3.0000">x^2+2xy</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="x^2+2xy = 3
+    3.0000 = 3.0000">=</span><span class="correct math  ve26ac6d6a9fbfbcb42e3c1914792ad8d " onmouseover='highlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d", 3.00000000000000, 0); ' onmouseout='unhighlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d"); ' data-tooltip="3
+    3.0000">3</span> as an example, or <span class="correct math  v4b098c3b84a08da471e123471228c9e8 " onmouseover='highlight("v4b098c3b84a08da471e123471228c9e8", 9.00000000000000, 0); ' onmouseout='unhighlight("v4b098c3b84a08da471e123471228c9e8"); ' data-tooltip="3+6
+    9.0000">3+6</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="3+6 = 9
+    9.0000 = 9.0000">=</span><span class="correct math  v4b098c3b84a08da471e123471228c9e8 " onmouseover='highlight("v4b098c3b84a08da471e123471228c9e8", 9.00000000000000, 0); ' onmouseout='unhighlight("v4b098c3b84a08da471e123471228c9e8"); ' data-tooltip="9
+    9.0000">9</span>, which are both true, but it is still up to the grader to know whether either statement is relevant.  If the student says something false, such as <span class="incorrect math  v5d66807c59c9078076ed44d6c8cd48ff " onmouseover='highlight("v5d66807c59c9078076ed44d6c8cd48ff", 2.00000000000000, 0); ' onmouseout='unhighlight("v5d66807c59c9078076ed44d6c8cd48ff"); ' data-tooltip="x+y
+    2.0000">x+y</span><span class="incorrect math " onmouseover='' onmouseout='' data-tooltip="x+y = 3
+    2.0000 = 3.0000">=</span><span class="incorrect math  ve26ac6d6a9fbfbcb42e3c1914792ad8d " onmouseover='highlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d", 3.00000000000000, 0); ' onmouseout='unhighlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d"); ' data-tooltip="3
+    3.0000">3</span>, then we mark that as well.   Furthermore, the machine understands that an expression cannot be evaluated, but you may still want to know something about it.  So if you hover your mouse over <span class="math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="x/y
+    1.0000">x/y</span> or <span class="math  ve26ac6d6a9fbfbcb42e3c1914792ad8d " onmouseover='highlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d", 3.00000000000000, 0); ' onmouseout='unhighlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d"); ' data-tooltip="3x
+    3.0000">3x</span>, you will learn its value and you will also be shown other expressions that have the same value.
+
+    The machine is also capable of dealing with chains of statements as in
+    <span class="correct math  v28b765257d633b663e657b4c4579c291 " onmouseover='highlight("v28b765257d633b663e657b4c4579c291", 4.00000000000000, 0); ' onmouseout='unhighlight("v28b765257d633b663e657b4c4579c291"); ' data-tooltip="2+2
+    4.0000">2+2</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="2+2 = 2*2
+    4.0000 = 4.0000">=</span><span class="correct correct math  v28b765257d633b663e657b4c4579c291 " onmouseover='highlight("v28b765257d633b663e657b4c4579c291", 4.00000000000000, 0); ' onmouseout='unhighlight("v28b765257d633b663e657b4c4579c291"); ' data-tooltip="2*2
+    4.0000">2*2</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="2*2 = 2^2
+    4.0000 = 4.0000">=</span><span class="correct_incorrect correct_incorrect math  v28b765257d633b663e657b4c4579c291 " onmouseover='highlight("v28b765257d633b663e657b4c4579c291", 4.00000000000000, 0); ' onmouseout='unhighlight("v28b765257d633b663e657b4c4579c291"); ' data-tooltip="2^2
+    4.0000">2^2</span><span class="incorrect math " onmouseover='' onmouseout='' data-tooltip="2^2 = 2/2
+    4.0000 = 1.0000">=</span><span class="incorrect math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="2/2
+    1.0000">2/2</span>.
+    It can parse a limited number of non-equation-looking text as well.  For example, <span class="correct math  v5d66807c59c9078076ed44d6c8cd48ff " onmouseover='highlight("v5d66807c59c9078076ed44d6c8cd48ff", 2.00000000000000, 0); ' onmouseout='unhighlight("v5d66807c59c9078076ed44d6c8cd48ff"); ' data-tooltip="2x
+    2.0000">2x</span><span class="math correct " onmouseover='' onmouseout='' data-tooltip="2x = 7 - 5y
+    2.0000 = 7.0000 - 5.0000"> is equal to </span><span class="correct math  v9773df384e5103933ce84fd861fadb35 " onmouseover='highlight("v9773df384e5103933ce84fd861fadb35", 7.00000000000000, 0); ' onmouseout='unhighlight("v9773df384e5103933ce84fd861fadb35"); ' data-tooltip="7
+    7.0000">7</span><span class="math correct " onmouseover='' onmouseout='' data-tooltip="2x = 7 - 5y
+    2.0000 = 7.0000 - 5.0000"> minus </span><span class="correct math  v624adab4299ba1754d32194725a6fd9b " onmouseover='highlight("v624adab4299ba1754d32194725a6fd9b", 5.00000000000000, 0); ' onmouseout='unhighlight("v624adab4299ba1754d32194725a6fd9b"); ' data-tooltip="5y
+    5.0000">5y</span>.
+
+    Finally, we also have the ability to check the negations of statements.  For example, <span class="plausible math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="x
+    1.0000">x</span><span class="math plausible " onmouseover='' onmouseout='' data-tooltip="x ≠ 2x
+    1.0000 ≠ 2.0000"> is not equal to </span><span class="plausible math  v5d66807c59c9078076ed44d6c8cd48ff " onmouseover='highlight("v5d66807c59c9078076ed44d6c8cd48ff", 2.00000000000000, 0); ' onmouseout='unhighlight("v5d66807c59c9078076ed44d6c8cd48ff"); ' data-tooltip="2x
+    2.0000">2x</span>.  We mark this in pink because it is a true statement, but not a very powerful one.  It turns out that it is much easier to make a false statement than to make a true statement.  For example, there&#x27;s only one value that <span class="math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="x
+    1.0000">x</span> can be, namely <span class="correct math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="x
+    1.0000">x</span><span class="correct math " onmouseover='' onmouseout='' data-tooltip="x = 1
+    1.0000 = 1.0000">=</span><span class="correct math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="1
+    1.0000">1</span>.  However, there are infinitely many inequality statements that can be made, <span class="plausible math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="x
+    1.0000">x</span><span class="plausible math " onmouseover='' onmouseout='' data-tooltip="x ≠ 2
+    1.0000 ≠ 2.0000">≠</span><span class="plausible math  v5d66807c59c9078076ed44d6c8cd48ff " onmouseover='highlight("v5d66807c59c9078076ed44d6c8cd48ff", 2.00000000000000, 0); ' onmouseout='unhighlight("v5d66807c59c9078076ed44d6c8cd48ff"); ' data-tooltip="2
+    2.0000">2</span>, <span class="plausible math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="x
+    1.0000">x</span><span class="plausible math " onmouseover='' onmouseout='' data-tooltip="x ≠ 3
+    1.0000 ≠ 3.0000">≠</span><span class="plausible math  ve26ac6d6a9fbfbcb42e3c1914792ad8d " onmouseover='highlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d", 3.00000000000000, 0); ' onmouseout='unhighlight("ve26ac6d6a9fbfbcb42e3c1914792ad8d"); ' data-tooltip="3
+    3.0000">3</span>, <span class="plausible math  v6049ba7a17fc648a2c43d480a2461ebb " onmouseover='highlight("v6049ba7a17fc648a2c43d480a2461ebb", 1.00000000000000, 0); ' onmouseout='unhighlight("v6049ba7a17fc648a2c43d480a2461ebb"); ' data-tooltip="x
+    1.0000">x</span><span class="plausible math " onmouseover='' onmouseout='' data-tooltip="x ≠ 4
+    1.0000 ≠ 4.0000">≠</span><span class="plausible math  v28b765257d633b663e657b4c4579c291 " onmouseover='highlight("v28b765257d633b663e657b4c4579c291", 4.00000000000000, 0); ' onmouseout='unhighlight("v28b765257d633b663e657b4c4579c291"); ' data-tooltip="4
+    4.0000">4</span>, etc.
+
+
+    <h2>Configurations</h2>
+
+    However, when working with many problems, and with geometry in particular, there are usually infinitely many ways in which a statement can be true.  For example, in the diagram, we have given the server a rubric that tells it that <span class="correct math " onmouseover='highlightTriangles(998, "#66FF66", "A", "B", "C")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="Angles ABC
+    Angles: (39.5590, 90.0000, 50.4410)
+    Angles: (47.7747, 90.0000, 42.2253)
+    Angles: (51.2752, 90.0000, 38.7248)
+    ">ABC</span><span class="math correct " onmouseover='' onmouseout='' data-tooltip="ABC is a right triangle
+    Angles: (39.5590, 90.0000, 50.4410)
+    Angles: (47.7747, 90.0000, 42.2253)
+    Angles: (51.2752, 90.0000, 38.7248)
+    "> is an arbitrary right triangle</span>.  Instead of working with formal mathematical statements, the machine works by sampling the full configuration space.  If you hover over the phrase <span class="correct math " onmouseover='highlightTriangles(998, "#66FF66", "A", "B", "C")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="Angles triangle ABC
+    Angles: (39.5590, 90.0000, 50.4410)
+    Angles: (47.7747, 90.0000, 42.2253)
+    Angles: (51.2752, 90.0000, 38.7248)
+    ">triangle ABC</span><span class="math correct " onmouseover='highlightTriangles(998, "#66FF66", "A", "B", "C", "A", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="triangle ABC ~ triangle ACH
+    Angles: (39.5590, 90.0000, 50.4410) = (39.5590, 90.0000, 50.4410)
+    Angles: (47.7747, 90.0000, 42.2253) = (47.7747, 90.0000, 42.2253)
+    Angles: (51.2752, 90.0000, 38.7248) = (51.2752, 90.0000, 38.7248)
+    "> is similar to </span><span class="correct math " onmouseover='highlightTriangles(998, "#66FF66", "A", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="Angles triangle ACH
+    Angles: (39.5590, 90.0000, 50.4410)
+    Angles: (47.7747, 90.0000, 42.2253)
+    Angles: (51.2752, 90.0000, 38.7248)
+    ">triangle ACH</span>, you will see that the machine believes this is a true statement because it is true for its three chosen sample diagrams.  Now you can be confident about these statements.  Be aware that even if the student gets the wrong ordering, such as <span class="math incorrect " onmouseover='highlightTriangles(998, "#EE6666", "A", "C", "H", "B", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="ACH ~ BCH
+    PROBABLE: △AHC ∼ △HBC
+    Angles: (39.5590, 90.0000, 50.4410) = (50.4410, 90.0000, 39.5590)
+    Angles: (47.7747, 90.0000, 42.2253) = (42.2253, 90.0000, 47.7747)
+    Angles: (51.2752, 90.0000, 38.7248) = (38.7248, 90.0000, 51.2752)
+    ">triangles </span><span class="incorrect math " onmouseover='highlightTriangles(998, "#EE6666", "A", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="Angles ACH
+    Angles: (39.5590, 90.0000, 50.4410)
+    Angles: (47.7747, 90.0000, 42.2253)
+    Angles: (51.2752, 90.0000, 38.7248)
+    ">ACH</span><span class="math incorrect " onmouseover='highlightTriangles(998, "#EE6666", "A", "C", "H", "B", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="ACH ~ BCH
+    PROBABLE: △AHC ∼ △HBC
+    Angles: (39.5590, 90.0000, 50.4410) = (50.4410, 90.0000, 39.5590)
+    Angles: (47.7747, 90.0000, 42.2253) = (42.2253, 90.0000, 47.7747)
+    Angles: (51.2752, 90.0000, 38.7248) = (38.7248, 90.0000, 51.2752)
+    "> and </span><span class="incorrect math " onmouseover='highlightTriangles(998, "#EE6666", "B", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="Angles BCH
+    Angles: (50.4410, 90.0000, 39.5590)
+    Angles: (42.2253, 90.0000, 47.7747)
+    Angles: (38.7248, 90.0000, 51.2752)
+    ">BCH</span><span class="math incorrect " onmouseover='highlightTriangles(998, "#EE6666", "A", "C", "H", "B", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="ACH ~ BCH
+    PROBABLE: △AHC ∼ △HBC
+    Angles: (39.5590, 90.0000, 50.4410) = (50.4410, 90.0000, 39.5590)
+    Angles: (47.7747, 90.0000, 42.2253) = (42.2253, 90.0000, 47.7747)
+    Angles: (51.2752, 90.0000, 38.7248) = (38.7248, 90.0000, 51.2752)
+    "> are similar</span>, the machine will recognize the error and also point out the incorrect ordering of the vertices.
+
+    We are also able to handle negations, as in <span class="math plausible " onmouseover='highlightAngles(998, "#FFCCFF", "A", "B", "C","B", "A", "C")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="ABC ≠ BAC
+    39.5590 ≠ 50.4410
+    47.7747 ≠ 42.2253
+    51.2752 ≠ 38.7248
+    ">angles </span><span class="plausible math  v8e91634f0bd179b74568af21f3b2b5e2 v6b0fdf7920000c311e759059a0cd6a33 vc6c903907d347271048c9ef02294999d " onmouseover='highlight("v6b0fdf7920000c311e759059a0cd6a33", 39.5589916369607, 0); highlightAngles(998, "#FFCCFF", "A", "B", "C")' onmouseout='unhighlight("v6b0fdf7920000c311e759059a0cd6a33"); unhighlightGeoEntities(998)' data-tooltip="Angle ABC
+    39.5590
+    47.7747
+    51.2752
+    ">ABC</span><span class="math plausible " onmouseover='highlightAngles(998, "#FFCCFF", "A", "B", "C","B", "A", "C")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="ABC ≠ BAC
+    39.5590 ≠ 50.4410
+    47.7747 ≠ 42.2253
+    51.2752 ≠ 38.7248
+    "> and </span><span class="plausible math  v73d11d6ae7f5a6191c67bfdf27d3baac v757d00aba38cfa3bed1e53688d18e830 v2cde0510a002b32e50e9b1c0d99d6b5d " onmouseover='highlight("v73d11d6ae7f5a6191c67bfdf27d3baac", 50.4410083630393, 0); highlightAngles(998, "#FFCCFF", "B", "A", "C")' onmouseout='unhighlight("v73d11d6ae7f5a6191c67bfdf27d3baac"); unhighlightGeoEntities(998)' data-tooltip="Angle BAC
+    50.4410
+    42.2253
+    38.7248
+    ">BAC</span><span class="math plausible " onmouseover='highlightAngles(998, "#FFCCFF", "A", "B", "C","B", "A", "C")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="ABC ≠ BAC
+    39.5590 ≠ 50.4410
+    47.7747 ≠ 42.2253
+    51.2752 ≠ 38.7248
+    "> are not congruent</span>, or <span class="math plausible " onmouseover='' onmouseout='' data-tooltip="ACH ≇ BCH
+    Edges: (28.8369, 22.2324, 18.3654) = (34.9086, 22.2324, 26.9135)
+    Edges: (35.9532, 24.1623, 26.6236) = (32.6293, 24.1623, 21.9285)
+    Edges: (49.6473, 31.0584, 38.7328) = (39.8103, 31.0584, 24.9046)
+    ">triangles </span><span class="plausible math " onmouseover='highlightTriangles(998, "#FFCCFF", "A", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="Lengths ACH
+    Edges: (28.8369, 22.2324, 18.3654)
+    Edges: (35.9532, 24.1623, 26.6236)
+    Edges: (49.6473, 31.0584, 38.7328)
+    ">ACH</span><span class="math plausible " onmouseover='' onmouseout='' data-tooltip="ACH ≇ BCH
+    Edges: (28.8369, 22.2324, 18.3654) = (34.9086, 22.2324, 26.9135)
+    Edges: (35.9532, 24.1623, 26.6236) = (32.6293, 24.1623, 21.9285)
+    Edges: (49.6473, 31.0584, 38.7328) = (39.8103, 31.0584, 24.9046)
+    "> and </span><span class="plausible math " onmouseover='highlightTriangles(998, "#FFCCFF", "B", "C", "H")' onmouseout='unhighlightGeoEntities(998)' data-tooltip="Lengths BCH
+    Edges: (34.9086, 22.2324, 26.9135)
+    Edges: (32.6293, 24.1623, 21.9285)
+    Edges: (39.8103, 31.0584, 24.9046)
+    ">BCH</span><span class="math plausible " onmouseover='' onmouseout='' data-tooltip="ACH ≇ BCH
+    Edges: (28.8369, 22.2324, 18.3654) = (34.9086, 22.2324, 26.9135)
+    Edges: (35.9532, 24.1623, 26.6236) = (32.6293, 24.1623, 21.9285)
+    Edges: (49.6473, 31.0584, 38.7328) = (39.8103, 31.0584, 24.9046)
+    "> are not congruent</span>.
+
+
+
+                <div id="jxgbox_998" class="jxgbox" style="width:500px; height:500px">
+                    <script>
+                        var diagram_998 = new function() {
+                            this.board = JXG.JSXGraph.initBoard("jxgbox_998", {
+                                boundingbox: [16.2934820552055, 97.6834128361953, 64.3238319535560, 36.9787106774851],
+                                keepaspectratio: true,
+                                showCopyright: false
+                            });
+
+                            this.A = this.board.create('point', [26.2934820552055, 87.6834128361953], {name:"A", size:3, fixed:true})
+                            this.B = this.board.create('point', [46.1254540684676, 46.9787106774851], {name:"B", size:3, fixed:true})
+                            this.C = this.board.create('point', [54.3238319535560, 80.9110026160413], {name:"C", size:3, fixed:true})
+                            this.H = this.board.create('point', [34.3374565417205, 71.1733257189441], {name:"H", size:3, fixed:true})
+
+                            this.AB = this.board.create('segment', [this.A, this.B], {strokeWidth:2})
+                            this.BC = this.board.create('segment', [this.B, this.C], {strokeWidth:2})
+                            this.CA = this.board.create('segment', [this.C, this.A], {strokeWidth:2})
+                            this.CH = this.board.create('segment', [this.C, this.H], {strokeWidth:2})
+
+
+                            this.listsDict = {
+                                "segments": [],
+                                "angles": [],
+                                "triangles": []
+                            }
+
+                            this.temporaryObjects = []
+                        }
+                    </script>
+                </div>
+
+
+
+    <h2>Declarations</h2>
+
+    We are also able to handle new variable declarations to some extent.  Here we define some new points. <span class="math declaration " onmouseover='' onmouseout='' data-tooltip="Declaration: G is the midpoint of AC
+    ">We let </span><span class="math declaration math " onmouseover='' onmouseout='' data-tooltip="inf">G</span><span class="math declaration " onmouseover='' onmouseout='' data-tooltip="Declaration: G is the midpoint of AC
+    "> be the midpoint of </span><span class="math  vb8cd9ee6f8289755e83da32fc4a600f0 vf7952dcda835bd2418c5328a082bfe78 va965ecba2cc3d2cc7447684501f4f5f5 declaration math  vb8cd9ee6f8289755e83da32fc4a600f0 vf7952dcda835bd2418c5328a082bfe78 va965ecba2cc3d2cc7447684501f4f5f5 " onmouseover='highlight("vb8cd9ee6f8289755e83da32fc4a600f0", 28.7690393284142, 0); highlightSegments(500, "#FFE6B6", "A", "C")highlight("vb8cd9ee6f8289755e83da32fc4a600f0", 28.7690393284142, 0); highlightSegments(500, "#FFE6B6", "A", "C")' onmouseout='unhighlight("vb8cd9ee6f8289755e83da32fc4a600f0"); unhighlightGeoEntities(500)unhighlight("vb8cd9ee6f8289755e83da32fc4a600f0"); unhighlightGeoEntities(500)' data-tooltip="Segment AC
+    28.7690
+    33.5751
+    95.4222
+    ">AC</span>. and we also <span class="math declaration " onmouseover='' onmouseout='' data-tooltip="Declaration: X is the midpoint of PG
+    ">let the midpoint of </span><span class="math  v3d4374d1a906da850df87f003ecbc8ae v1a79b684e2c1742965abfd122ecbf761 v6b91142a2180b9ff978daf43fa114ced declaration math  v3d4374d1a906da850df87f003ecbc8ae v1a79b684e2c1742965abfd122ecbf761 v6b91142a2180b9ff978daf43fa114ced " onmouseover='highlight("v1a79b684e2c1742965abfd122ecbf761", 7.79153261675239, 0); highlightSegments(500, "#FFE6B6", "P", "G")highlight("v1a79b684e2c1742965abfd122ecbf761", 7.79153261675239, 0); highlightSegments(500, "#FFE6B6", "P", "G")' onmouseout='unhighlight("v1a79b684e2c1742965abfd122ecbf761"); unhighlightGeoEntities(500)unhighlight("v1a79b684e2c1742965abfd122ecbf761"); unhighlightGeoEntities(500)' data-tooltip="Segment PG
+    7.7915
+    8.7822
+    27.0273
+    ">PG</span><span class="math declaration " onmouseover='' onmouseout='' data-tooltip="Declaration: X is the midpoint of PG
+    "> be </span><span class="math declaration math " onmouseover='' onmouseout='' data-tooltip="inf">X</span>.  Finally, <span class="math declaration " onmouseover='' onmouseout='' data-tooltip="Declaration: O is the intersection of lines AE and XB
+    ">let </span><span class="math  v43af996a5265e950549e1300842faa3e v1a9ec79fffec4a072521f56b38818c65 v73dda8c8e2827794892f9a53e6cd3c06 declaration math  v43af996a5265e950549e1300842faa3e v1a9ec79fffec4a072521f56b38818c65 v73dda8c8e2827794892f9a53e6cd3c06 " onmouseover='highlight("v1a9ec79fffec4a072521f56b38818c65", 22.2122377665674, 0); highlightSegments(500, "#FFE6B6", "A", "E")highlight("v1a9ec79fffec4a072521f56b38818c65", 22.2122377665674, 0); highlightSegments(500, "#FFE6B6", "A", "E")' onmouseout='unhighlight("v1a9ec79fffec4a072521f56b38818c65"); unhighlightGeoEntities(500)unhighlight("v1a9ec79fffec4a072521f56b38818c65"); unhighlightGeoEntities(500)' data-tooltip="Segment AE
+    22.2122
+    88.7596
+    63.7543
+    ">AE</span><span class="math declaration " onmouseover='' onmouseout='' data-tooltip="Declaration: O is the intersection of lines AE and XB
+    "> and </span><span class="math  ve2287433868271fed77c3b3ddb0bd185 v3b1f9bb5ea04894faf93b998510b98c4 v45ef1ff3be4f539001aee26f40d071ad declaration math  ve2287433868271fed77c3b3ddb0bd185 v3b1f9bb5ea04894faf93b998510b98c4 v45ef1ff3be4f539001aee26f40d071ad " onmouseover='highlight("v3b1f9bb5ea04894faf93b998510b98c4", 16.4081531251210, 0); highlightSegments(500, "#FFE6B6", "X", "B")highlight("v3b1f9bb5ea04894faf93b998510b98c4", 16.4081531251210, 0); highlightSegments(500, "#FFE6B6", "X", "B")' onmouseout='unhighlight("v3b1f9bb5ea04894faf93b998510b98c4"); unhighlightGeoEntities(500)unhighlight("v3b1f9bb5ea04894faf93b998510b98c4"); unhighlightGeoEntities(500)' data-tooltip="Segment XB
+    16.4082
+    24.9420
+    30.7317
+    ">XB</span><span class="math declaration " onmouseover='' onmouseout='' data-tooltip="Declaration: O is the intersection of lines AE and XB
+    "> intersect at </span><span class="math declaration math " onmouseover='' onmouseout='' data-tooltip="inf">O</span>.
+
+    Now that we have these points, they are usable, as in <span class="incorrect math  v1f293bafc22a78f51fc5b9ba1fc3c7c4 v99dc9d688cbf535a1d8373c0da879934 v58498fa45e105916ad179053eeeac944 " onmouseover='highlight("v58498fa45e105916ad179053eeeac944", 46.2419153439317, 0); highlightAngles(500, "#FFE6B6", "O", "A", "X")' onmouseout='unhighlight("v58498fa45e105916ad179053eeeac944"); unhighlightGeoEntities(500)' data-tooltip="Angle angle OAX 
+    46.2419
+    22.4204
+    23.1761
+    ">angle OAX </span><span class="incorrect math " onmouseover='highlightAngles(500, "#EE6666", "O", "A", "X","O", "D", "X")' onmouseout='unhighlightGeoEntities(500)' data-tooltip="angle OAX  =  angle ODX
+    46.2419 = 45.1415
+    22.4204 = 10.2589
+    23.1761 = 35.9708
+    ">=</span><span class="incorrect math  v6bc2932046c8890324c75523fc909b11 v1819c12375891a7bb234706e21adc706 v31303e22537e5935561ffb388ca93e9e " onmouseover='highlight("v1819c12375891a7bb234706e21adc706", 45.1415116570650, 0); highlightAngles(500, "#FFE6B6", "O", "D", "X")' onmouseout='unhighlight("v1819c12375891a7bb234706e21adc706"); unhighlightGeoEntities(500)' data-tooltip="Angle  angle ODX
+    45.1415
+    10.2589
+    35.9708
+    "> angle ODX</span> or <span class="plausible math  v1f293bafc22a78f51fc5b9ba1fc3c7c4 v99dc9d688cbf535a1d8373c0da879934 v58498fa45e105916ad179053eeeac944 " onmouseover='highlight("v58498fa45e105916ad179053eeeac944", 46.2419153439317, 0); highlightAngles(500, "#FFE6B6", "O", "A", "X")' onmouseout='unhighlight("v58498fa45e105916ad179053eeeac944"); unhighlightGeoEntities(500)' data-tooltip="Angle angle OAX
+    46.2419
+    22.4204
+    23.1761
+    ">angle OAX</span><span class="math plausible " onmouseover='highlightAngles(500, "#FFCCFF", "O", "A", "X","O", "D", "X")' onmouseout='unhighlightGeoEntities(500)' data-tooltip="angle OAX ≠ angle ODX
+    46.2419 ≠ 45.1415
+    22.4204 ≠ 10.2589
+    23.1761 ≠ 35.9708
+    "> is not congruent to </span><span class="plausible math  v6bc2932046c8890324c75523fc909b11 v1819c12375891a7bb234706e21adc706 v31303e22537e5935561ffb388ca93e9e " onmouseover='highlight("v1819c12375891a7bb234706e21adc706", 45.1415116570650, 0); highlightAngles(500, "#FFE6B6", "O", "D", "X")' onmouseout='unhighlight("v1819c12375891a7bb234706e21adc706"); unhighlightGeoEntities(500)' data-tooltip="Angle angle ODX
+    45.1415
+    10.2589
+    35.9708
+    ">angle ODX</span>.
+
+                <div id="jxgbox_500" class="jxgbox" style="width:500px; height:500px">
+                    <script>
+                        var diagram_500 = new function() {
+                            this.board = JXG.JSXGraph.initBoard("jxgbox_500", {
+                                boundingbox: [57.8801627293256, 87.9344764280626, 109.868003733205, 46.2474815673671],
+                                keepaspectratio: true,
+                                showCopyright: false
+                            });
+
+                            this.A = this.board.create('point', [72.1689837179399, 77.9344764280626], {name:"A", size:3, fixed:true})
+                            this.B = this.board.create('point', [67.8801627293256, 66.3214473533137], {name:"B", size:3, fixed:true})
+                            this.E = this.board.create('point', [76.9708334147433, 56.2474815673671], {name:"E", size:3, fixed:true})
+                            this.C = this.board.create('point', [99.8680037332050, 70.1613230091608], {name:"C", size:3, fixed:true})
+                            this.D = this.board.create('point', [86.5089201190361, 62.0434565378851], {name:"D", size:3, fixed:true})
+                            this.P = this.board.create('point', [81.2050756655459, 67.9209929054370], {name:"P", size:3, fixed:true})
+                            this.G = this.board.create('point', [86.0184937255725, 74.0478997186117], {name:"G", size:3, fixed:true})
+                            this.X = this.board.create('point', [83.6117846955592, 70.9844463120243], {name:"X", size:3, fixed:true})
+                            this.O = this.board.create('point', [74.3177948267591, 68.2296213376191], {name:"O", size:3, fixed:true})
+
+                            this.BE = this.board.create('segment', [this.B, this.E], {strokeWidth:2})
+                            this.EC = this.board.create('segment', [this.E, this.C], {strokeWidth:2})
+                            this.CB = this.board.create('segment', [this.C, this.B], {strokeWidth:2})
+                            this.AC = this.board.create('segment', [this.A, this.C], {strokeWidth:2})
+                            this.AD = this.board.create('segment', [this.A, this.D], {strokeWidth:2})
+                            this.AP = this.board.create('segment', [this.A, this.P], {strokeWidth:2})
+
+
+                            this.listsDict = {
+                                "segments": [],
+                                "angles": [],
+                                "triangles": []
+                            }
+
+                            this.temporaryObjects = []
+                        }
+                    </script>
+                </div>
+
+
+    <h2>Best Practices</h2>
+
+    So, should the analysis server eventually replace the human work we do to verify student claims? Absolutely not, though it should greatly help with that process. This bot has many strengths, and it should save a lot of time with certain student submissions. But the tool has many limitations: combinatorics is hard for it to parse, students may write in insufficiently clear language, and proof by contradiction is a whole can of worms. Ensuring that a student's solution even includes the necessary steps will remain entirely a human domain (for now). The tool will be great at considering geometric statements, assigning new variables, and when it thinks it knows enough to make an assessment about a statement, it is very accurate. 
+
+    Play around with the bot, and get a sense of how you can best employ it without over-relying on it. First, read the student submission. If the student wrote enough expressions that the AI can parse, you can skim, trusting that you’ll verify them with the bot’s help. For any statement marked as true, it’s sufficient to give a sanity check on the math and make sure it looks like it's written in a way the bot can handle. If you're not sure, always tend on the side of double checking. We hope this makes grading easier, faster, and/or more human. If you get the chance to play with it, let us know any successes or bugs on the School Staff Forum. Happy problem solving!
+
+
+    </div>
+
+</div>
+    
+<script>
+function switchTab(evt, tabName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>
 </body>
 </html>
