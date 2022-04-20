@@ -443,23 +443,19 @@ The Director of Companies was our captain and our host. We four affectionately w
 
 			<script>
 function highlightGradeInappropriate(input) {
+	var readabilityFunction = getScores;
 	var highlight = [];
-
 	var grade_ = input.match(/\d+/);
+
+	// Break if no grade.
 	if(!grade_){ return false;}
 
 	var grade = grade_ ? parseInt(grade_[0]) : 5;
 	var grade_start = grade_['index'];
 	var grade_end   = grade_['index'] + grade_[0].length;
-
-	// Break if no grade.
 	var main_text = input.slice(grade_end);
-	paragraphs = main_text.match(/((?:[^\n][\n]?)+)/g);
-	//paragraphs = main_text.match([.?!]\\s[^a-z]/g);
-	console.log(paragraphs);
-	var readabilityFunction = getScores;
-	
 
+	paragraphs = main_text.match(/((?:[^\n][\n]?)+)/g);
 	
 	highlight.push(
 		{
@@ -470,12 +466,10 @@ function highlightGradeInappropriate(input) {
 
 	var start = grade_end;
 	for (i=0; i< paragraphs.length; i++) {
-		end = start + paragraphs[i].length;
-	 	console.log(paragraphs[i].slice(0,10));
+		var end = start + paragraphs[i].length;
 		var readabilityValues = readabilityFunction(paragraphs[i]);
 		var medianGrade = parseInt(readabilityValues['medianGrade']);
-		console.log(medianGrade);
-		console.log(grade+2);
+	 	console.log('"' + paragraphs[i].slice(0,20) + '..." has grade level ' + medianGrade.toString());
 		if(medianGrade > grade + 2) {
 			highlight.push(
 				{
@@ -487,8 +481,6 @@ function highlightGradeInappropriate(input) {
 		start = end;
 	}
 
-
-	console.log(highlight);	
 	return highlight;
 	
 	
