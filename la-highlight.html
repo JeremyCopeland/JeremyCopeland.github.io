@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Highlight Within Textarea</title>
+
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Droid+Sans+Mono" rel="stylesheet">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+		<!-- highlight-within-textarea CSS/JS -->
+		<link href="jquery.highlight-within-textarea.css" rel="stylesheet">
+		<script src="jquery.highlight-within-textarea.js"></script>
+		<script src="readability.js"></script>
+
+		<!-- custom styles for highlight-within-textarea -->
+		<style>
+			.hwt-container {
+				background-color: #f8f9fa;
+			}
+
+			.hwt-content {
+				width: 760px;
+				height: 100px;
+				padding: 20px;
+				border: 1px solid #adb5bd;
+				color: inherit;
+				font: 18px/25px 'Droid Sans Mono', sans-serif;
+			}
+
+			.hwt-input:focus {
+				outline-color: #495057;
+			}
+
+			.hwt-content mark {
+				border-radius: 3px;
+				background-color: #d0bfff;
+			}
+
+			.hwt-content mark.red {
+				background-color: #ffc9c9;
+			}
+
+			.hwt-content mark.blue {
+				background-color: #a3daff;
+			}
+
+			.hwt-content mark.yellow {
+				background-color: #ffec99;
+			}
+		</style>
+
+		<!-- general styles to make this page look decent -->
+		<style>
+			* {
+				box-sizing: border-box;
+			}
+
+			body {
+				max-width: 800px;
+				margin: 40px auto;
+				padding: 0 20px;
+				font: 18px/1.4 'Open Sans', sans-serif;
+				color: #495057;
+				background-color: #f1f3f5;
+			}
+
+			a {
+				display: inline-block;
+				margin-bottom: 5px;
+				padding: 10px 30px;
+				border-radius: 5px;
+				color: #f8f9fa;
+				background-color: #495057;
+				text-decoration: none;
+			}
+
+			section {
+				margin-top: 60px;
+			}
+
+			code {
+				padding: 0 5px;
+				font-family: 'Droid Sans Mono', sans-serif;
+				font-size: 16px;
+				background-color: #dee2e6;
+			}
+
+			/*script {
+				display: block;
+				margin-top: 10px;
+				padding-left: 15px;
+				border-left: 5px solid #adb5bd;
+				background-color: #e9ecef;
+				white-space: pre-wrap;
+				font: 14px/1.5 'Droid Sans Mono', sans-serif;
+			}*/
+		</style>
+	</head>
+	<body>
+
+		<section>
+			<h2>Function</h2>
+			<p>You can use a function for custom logic. It can return any of the types mentioned here. Return anything falsey (<code>false</code>, <code>undefined</code>, etc.) to indicate no highlighting. The current textarea input is provided to it for convenience.</p>
+			<textarea class="example1" style="width:800px; height: 700px;">
+Grade: 2
+Once upon a time and a very good time it was there was a moocow coming down along the road and this moocow that was coming down along the road met a nicens little boy named baby tuckoo. . . . His father told him that story: his father looked at him through a glass: he had a hairy face. He was a baby tuckoo. The moocow came down the road where Betty Byrne lived: she sold lemon platt.
+
+O, the wild rose blossoms On the little green place.
+
+He sang that song. That was his song.
+
+O, the green wothe botheth.
+
+When you wet the bed first it is warm then it gets cold. His mother put on the oilsheet. That had the queer smell.</textarea>
+
+
+			<textarea class="example1" style="width:800px; height: 700px;">
+Grade: 8
+The Nellie, a cruising yawl, swung to her anchor without a flutter of the sails, and was at rest. The flood had made, the wind was nearly calm, and being bound down the river, the only thing for it was to come to and wait for the turn of the tide.
+
+The sea-reach of the Thames stretched before us like the beginning of an interminable waterway. In the offing the sea and the sky were welded together without a joint, and in the luminous space the tanned sails of the barges drifting up with the tide seemed to stand still in red clusters of canvas sharply peaked, with gleams of varnished sprits. A haze rested on the low shores that ran out to sea in vanishing flatness. The air was dark above Gravesend, and farther back still seemed condensed into a mournful gloom, brooding motionless over the biggest, and the greatest, town on earth.
+
+The Director of Companies was our captain and our host. We four affectionately watched his back as he stood in the bows looking to seaward. On the whole river there was nothing that looked half so nautical. He resembled a pilot, which to a seaman is trustworthiness personified. It was difficult to realize his work was not out there in the luminous estuary, but behind him, within the brooding gloom.</textarea>
+
+			<script>
+function highlightGradeInappropriate(input) {
+	var highlight = [];
+
+	var grade_ = input.match(/\d+/);
+	if(!grade_){ return false;}
+
+	var grade = grade_ ? parseInt(grade_[0]) : 5;
+	var grade_start = grade_['index'];
+	var grade_end   = grade_['index'] + grade_[0].length;
+
+	// Break if no grade.
+	var main_text = input.slice(grade_end);
+	paragraphs = main_text.match(/((?:[^\n][\n]?)+)/g);
+	//paragraphs = main_text.match([.?!]\\s[^a-z]/g);
+	console.log(paragraphs);
+	var readabilityFunction = getScores;
+	
+
+	
+	highlight.push(
+		{
+			highlight : [grade_start, grade_end],
+			className: 'yellow'
+		}
+	);
+
+	var start = grade_end;
+	for (i=0; i< paragraphs.length; i++) {
+		end = start + paragraphs[i].length;
+	 	console.log(paragraphs[i].slice(0,10));
+		var readabilityValues = readabilityFunction(paragraphs[i]);
+		var medianGrade = parseInt(readabilityValues['medianGrade']);
+		console.log(medianGrade);
+		console.log(grade+2);
+		if(medianGrade > grade + 2) {
+			highlight.push(
+				{
+					highlight : [start, end],
+					className: 'red'
+				}
+			);
+		}
+		start = end;
+	}
+
+
+	console.log(highlight);	
+	return highlight;
+	
+	
+}
+
+$('.example1').highlightWithinTextarea({
+    highlight: highlightGradeInappropriate
+});
+			</script>
+		</section>
+
+	</body>
+</html>
+	
