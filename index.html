@@ -39,7 +39,49 @@
         /* Create an active/current tablink class */
         .tab button.active {
           background-color: #ccc;
-        }        
+        }     
+        
+        /* Style the tab content */
+        .tabcontent {
+          display: none;
+         /* padding: 6px 12px;
+          border: 1px solid #ccc;
+          border-top: none;*/
+        }
+        
+        			.hwt-container {
+				background-color: #f8f9fa;
+			}
+
+			.hwt-content {
+				width: 760px;
+				height: 100px;
+				padding: 20px;
+				border: 1px solid #adb5bd;
+				color: inherit;
+				font: 18px/25px 'Droid Sans Mono', sans-serif;
+			}
+
+			.hwt-input:focus {
+				outline-color: #495057;
+			}
+
+			.hwt-content mark {
+				border-radius: 3px;
+				background-color: #d0bfff;
+			}
+
+			.hwt-content mark.red {
+				background-color: #ffc9c9;
+			}
+
+			.hwt-content mark.blue {
+				background-color: #a3daff;
+			}
+
+			.hwt-content mark.yellow {
+				background-color: #ffec99;
+			}
     </style>
 
 </head>
@@ -47,8 +89,8 @@
 <body class="aops-font">
 
 <div class="tab">
-  <button class="tablinks" onclick="openTab(event, 'featan')">featan</button>
-  <button class="tablinks" onclick="openTab(event, 'la-test')">la-test</button>
+  <button class="tablinks" onclick="switchTab(event, 'featan')">featan</button>
+  <button class="tablinks" onclick="switchTab(event, 'la-test')">la-test</button>
 </div>
 
  <div id="featan" class="tabcontent">
@@ -347,6 +389,110 @@
     </div>
 
 </div>
+    
+    
+    
+    
+/***************************************************
+*
+*
+*  LA TEST
+*
+*
+****************************************************/    
+ 
+ <div id="la-test" class="tabcontent">
+    
+<textarea class="example1" style="width:800px; height: 700px;">
+Grade: 2
+Once upon a time and a very good time it was there was a moocow coming down along the road and this moocow that was coming down along the road met a nicens little boy named baby tuckoo. . . . His father told him that story: his father looked at him through a glass: he had a hairy face. He was a baby tuckoo. The moocow came down the road where Betty Byrne lived: she sold lemon platt.
+
+O, the wild rose blossoms On the little green place.
+
+He sang that song. That was his song.
+
+O, the green wothe botheth.
+
+When you wet the bed first it is warm then it gets cold. His mother put on the oilsheet. That had the queer smell.</textarea>
+
+
+<textarea class="example1" style="width:800px; height: 700px;">
+Grade: 8
+The Nellie, a cruising yawl, swung to her anchor without a flutter of the sails, and was at rest. The flood had made, the wind was nearly calm, and being bound down the river, the only thing for it was to come to and wait for the turn of the tide.
+
+The sea-reach of the Thames stretched before us like the beginning of an interminable waterway. In the offing the sea and the sky were welded together without a joint, and in the luminous space the tanned sails of the barges drifting up with the tide seemed to stand still in red clusters of canvas sharply peaked, with gleams of varnished sprits. A haze rested on the low shores that ran out to sea in vanishing flatness. The air was dark above Gravesend, and farther back still seemed condensed into a mournful gloom, brooding motionless over the biggest, and the greatest, town on earth.
+
+The Director of Companies was our captain and our host. We four affectionately watched his back as he stood in the bows looking to seaward. On the whole river there was nothing that looked half so nautical. He resembled a pilot, which to a seaman is trustworthiness personified. It was difficult to realize his work was not out there in the luminous estuary, but behind him, within the brooding gloom.
+</textarea>
+
+			<script>
+function highlightGradeInappropriate(input) {
+	var highlight = [];
+
+	var grade_ = input.match(/\d+/);
+	if(!grade_){ return false;}
+
+	var grade = grade_ ? parseInt(grade_[0]) : 5;
+	var grade_start = grade_['index'];
+	var grade_end   = grade_['index'] + grade_[0].length;
+
+	// Break if no grade.
+	var main_text = input.slice(grade_end);
+	paragraphs = main_text.match(/((?:[^\n][\n]?)+)/g);
+	//paragraphs = main_text.match([.?!]\\s[^a-z]/g);
+	console.log(paragraphs);
+	var readabilityFunction = getScores;
+	
+
+	
+	highlight.push(
+		{
+			highlight : [grade_start, grade_end],
+			className: 'yellow'
+		}
+	);
+
+	var start = grade_end;
+	for (i=0; i< paragraphs.length; i++) {
+		end = start + paragraphs[i].length;
+	 	console.log(paragraphs[i].slice(0,10));
+		var readabilityValues = readabilityFunction(paragraphs[i]);
+		var medianGrade = parseInt(readabilityValues['medianGrade']);
+		console.log(medianGrade);
+		console.log(grade+2);
+		if(medianGrade > grade + 2) {
+			highlight.push(
+				{
+					highlight : [start, end],
+					className: 'red'
+				}
+			);
+		}
+		start = end;
+	}
+
+
+	console.log(highlight);	
+	return highlight;
+	
+	
+}
+
+$('.example1').highlightWithinTextarea({
+    highlight: highlightGradeInappropriate
+});
+</script>
+
+     
+     
+     
+</div>
+    
+    
+    
+    
+    
+    
     
 <script>
 function switchTab(evt, tabName) {
